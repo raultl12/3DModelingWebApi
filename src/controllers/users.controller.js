@@ -7,7 +7,7 @@ const saltRounds = 10;
 export const getUsers = async (req, res) => {
     const [rows] = await pool.query("SELECT * FROM users");
 
-    return rows;
+    res.json(rows);
 }
 
 export const insertUser = async (req, res) => {
