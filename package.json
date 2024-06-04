@@ -1,0 +1,21 @@
+{
+  "name": "3dmodelingweb_api",
+  "version": "1.0.0",
+  "description": "Api for 3D Modeling Web",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "author": "Raúl Torrente López",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "express": "^4.19.2",
+    "mysql2": "^3.10.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.2"
+  }
+}
