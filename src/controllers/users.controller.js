@@ -41,13 +41,12 @@ export const userLogin = async (req, res) => {
         const passMatch = await bcrypt.compare(password, databaseHash);
 
         if (passMatch) {
-            // Guardar la sesión
-            req.session.user = {
-                name: name,
-                loggedIn: true
-            };
-            // No devolver nada en la respuesta
-            res.sendStatus(204); // No Content
+            req.session.regenerate(function (err) {
+                if (err) res.status(500).send('Internal Server Error')
+                req.session.user = name
+                req.session.save();
+                res.sendStatus(204);
+            })
         } else {
             res.status(401).send('Unauthorized'); // Contraseña incorrecta
         }
