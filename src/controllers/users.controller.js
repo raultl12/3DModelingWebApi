@@ -29,12 +29,13 @@ export const getUserWithId = async (req, res) => {
 }
 
 export const userLogin = async (req, res) => {
+    console.log(req.body);
     try {
-        const { name, password } = req.body;
-        const [rows] = await pool.query("SELECT password FROM users WHERE name = ?", [name]);
+        const { user, password } = req.body;
+        const [rows] = await pool.query("SELECT password FROM users WHERE name = ?", [user]);
 
         if (rows.length === 0) {
-            return res.status(401).send('Unauthorized'); // Usuario no encontrado
+            return res.status(401).json({ status: 'error', message: 'Unauthorized' }); // Usuario no encontrado
         }
 
         const databaseHash = rows[0].password;
@@ -43,20 +44,20 @@ export const userLogin = async (req, res) => {
         if (passMatch) {
             req.session.regenerate(function (err) {
                 if (err) res.status(500).send('Internal Server Error')
-                req.session.user = name
+                req.session.user = user
                 req.session.save();
-                res.sendStatus(204);
+                res.status(200).json({ status: 'ok' });
             })
         } else {
-            res.status(401).send('Unauthorized'); // Contraseña incorrecta
+            res.status(401).json({ status: 'error', message: 'Unauthorized' }); // Contraseña incorrecta
         }
     } catch (error) {
         console.error(error);
-        res.status(500).send('Internal Server Error');
+        res.status(500).json({ status: 'error', message: 'Internal Server Error' });
     }
 }
 
 export const userLogout = async (req, res) => {
     req.session.destroy();
-    res.sendStatus(204);
+    res.status(200).json({ status: 'ok' });
 }
