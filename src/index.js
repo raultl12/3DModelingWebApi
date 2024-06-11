@@ -1,5 +1,6 @@
 import express from 'express';
 import usersRoutes from './routes/users.routes.js';
+import scenesRoutes from './routes/scenes.routes.js';
 import session from 'express-session';
 import cors from 'cors';
 import bodyParser from 'body-parser';
@@ -13,8 +14,8 @@ app.use(cors({
   credentials: true // Permitir el envío de cookies
 }));
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true }));
 app.use(cookieParser());
 
 app.use(session({
@@ -40,6 +41,7 @@ app.use(session({
 app.use(express.json());
 */
 app.use('/api', usersRoutes);
+app.use('/api', scenesRoutes);
 
 app.get('/', (req, res) => {
     //Mostrar usuario logueado, si no hay, inicarlo
