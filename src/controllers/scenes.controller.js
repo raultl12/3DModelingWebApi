@@ -32,3 +32,22 @@ export const saveScene = async (req, res) => {
     }
 
 }
+
+export const deleteScene = async (req, res) => {
+    try {
+        if (!req.session || !req.session.user) {
+            return res.status(401).json({ status: 'error', message: 'Unauthorized' });
+        }
+        const sceneId = req.body.id;
+        console.log(sceneId);
+
+        await pool.query("DELETE FROM scenes WHERE id = ?", [sceneId]);
+
+        await pool.query("DELETE FROM creates WHERE sceneId = ?", [sceneId]);
+
+        res.status(200).json({ status: 'ok' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ status: 'error', message: 'Internal Server Error' });
+    }
+}
