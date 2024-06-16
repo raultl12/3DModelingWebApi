@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getUserScenes, saveScene, getScene } from "../controllers/scenes.controller.js";
+import { getUserScenes, saveScene } from "../controllers/scenes.controller.js";
 
 const router = Router();
 
