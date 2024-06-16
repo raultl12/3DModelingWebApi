@@ -7,6 +7,4 @@ router.get("/scenes", getUserScenes);
 
 router.post("/scenes", saveScene);
 
-router.get("/scenes/:id", getScene);
-
 export default router;

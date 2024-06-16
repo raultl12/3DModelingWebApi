@@ -35,7 +35,7 @@ export const userLogin = async (req, res) => {
         const [rows] = await pool.query("SELECT password FROM users WHERE name = ?", [user]);
 
         if (rows.length === 0) {
-            return res.status(401).json({ status: 'error', message: 'Unauthorized' }); // Usuario no encontrado
+            return res.status(401).json({ status: 'error', message: 'Unauthorized' });
         }
 
         const databaseHash = rows[0].password;
@@ -49,7 +49,7 @@ export const userLogin = async (req, res) => {
                 res.status(200).json({ status: 'ok' });
             })
         } else {
-            res.status(401).json({ status: 'error', message: 'Unauthorized' }); // Contraseña incorrecta
+            res.status(401).json({ status: 'error', message: 'Unauthorized' });
         }
     } catch (error) {
         console.error(error);

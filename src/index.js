@@ -10,8 +10,8 @@ const app = express();
 
 // Configurar CORS
 app.use(cors({
-  origin: 'http://localhost:5173', // Origen permitido
-  credentials: true // Permitir el envío de cookies
+  origin: 'http://localhost:5173',
+  credentials: true
 }));
 
 app.use(bodyParser.json({limit: '50mb'}));
@@ -22,29 +22,13 @@ app.use(session({
   secret: 'secret',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false } // Cambia a true si usas HTTPS
-}));
-/*
-const app = express();
-
-app.use(cors({
-    origin: 'http://localhost:5173', // Origen permitido
-    credentials: true // Permitir el envío de cookies
+  cookie: { secure: false }
 }));
 
-app.use(session({
-    secret: 'secret',
-    resave: false,
-    saveUninitialized: true
-}));
-
-app.use(express.json());
-*/
 app.use('/api', usersRoutes);
 app.use('/api', scenesRoutes);
 
 app.get('/', (req, res) => {
-    //Mostrar usuario logueado, si no hay, inicarlo
     if(req.session.user){
         res.send(`Bienvenido ${req.session.user}`);
     }
