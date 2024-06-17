@@ -51,3 +51,21 @@ export const deleteScene = async (req, res) => {
         res.status(500).json({ status: 'error', message: 'Internal Server Error' });
     }
 }
+
+export const updateSceneName = async (req, res) => {
+    try {
+        if (!req.session || !req.session.user) {
+            return res.status(401).json({ status: 'error', message: 'Unauthorized' });
+        }
+
+        const sceneId = req.body.id;
+        const sceneName = req.body.name;
+
+        await pool.query("UPDATE scenes SET name = ? WHERE id = ?", [sceneName, sceneId]);
+
+        res.status(200).json({ status: 'ok' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ status: 'error', message: 'Internal Server Error' });
+    }
+}
