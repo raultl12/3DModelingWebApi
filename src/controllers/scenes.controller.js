@@ -15,16 +15,24 @@ export const getUserScenes = async (req, res) => {
 
 export const saveScene = async (req, res) => {
     try {
-        const [rows] = await pool.query("SELECT id FROM users WHERE name = ?", [req.session.user]);
-        const userId = rows[0].id;
-
-        const {scene} = req.body;
-        const [sceneRows] = await pool.query("INSERT INTO scenes (name, content) VALUES (?,?)", ["new scene", scene]);
-        const sceneId = sceneRows.insertId;
-
-        await pool.query("INSERT INTO creates (userId, sceneId) VALUES (?, ?)", [userId, sceneId]);
-
-        res.status(200).json({ status: 'ok' });
+        console.log(req.body);
+        if(req.body.id){
+            await pool.query("UPDATE scenes SET content = ? WHERE id = ?", [req.body.scene, req.body.id]);
+            res.status(200).json({ status: 'ok' });
+            return;
+        }
+        else{
+            const [rows] = await pool.query("SELECT id FROM users WHERE name = ?", [req.session.user]);
+            const userId = rows[0].id;
+    
+            const {scene} = req.body;
+            const [sceneRows] = await pool.query("INSERT INTO scenes (name, content) VALUES (?,?)", ["new scene", scene]);
+            const sceneId = sceneRows.insertId;
+    
+            await pool.query("INSERT INTO creates (userId, sceneId) VALUES (?, ?)", [userId, sceneId]);
+    
+            res.status(200).json({ status: 'ok' });
+        }
         
     } catch (error) {
         console.error(error);
